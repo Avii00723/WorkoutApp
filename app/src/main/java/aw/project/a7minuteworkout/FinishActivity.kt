@@ -1,51 +1,65 @@
 package aw.project.a7minuteworkout
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import aw.project.a7minuteworkout.databinding.ActivityFinishBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import aw.project.a7minuteworkout.databinding.ActivityFinishBinding
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.*
-
+import java.util.Calendar
+import java.util.Locale
 
 class FinishActivity : AppCompatActivity() {
-    private var binding : ActivityFinishBinding?=null
+
+    private var binding: ActivityFinishBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityFinishBinding.inflate(layoutInflater)
+        binding = ActivityFinishBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+
+        // Set up the toolbar as the action bar
         setSupportActionBar(binding?.toolbarFinishActivity)
-        if(supportActionBar!=null){
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        }
-        binding?.toolbarFinishActivity?.setNavigationOnClickListener{
-            onBackPressed()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // Handle the back button click
+        binding?.toolbarFinishActivity?.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
 
-        binding?.btnFinish?.setOnClickListener{
+        // Finish the activity when the finish button is clicked
+        binding?.btnFinish?.setOnClickListener {
             finish()
         }
 
-        val dao=(application as WorkoutApp).db.historyDao()
+        // Get the DAO and add the date to the database
+        val dao = (application as WorkoutApp).db.historyDao()
         addDateToDatabase(dao)
     }
-    private fun addDateToDatabase(historyDao: HistoryDao){
-        val c  =Calendar.getInstance()
-        val datetime=c.time
-        Log.e("Date: ",""+datetime)
-        val sdf=SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault())
-        val date=sdf.format(datetime)
-        Log.e("Formatted Date : ",""+date)
-        lifecycleScope.launch{
-            historyDao.insert(HistoryEntity(date))
-            Log.e(
-                "Date :"
-            ,"Added..."
-            )
+
+    private fun addDateToDatabase(historyDao: HistoryDao) {
+        val calendar = Calendar.getInstance()
+        val datetime = calendar.time
+        Log.e("Date: ", "$datetime")
+
+        // Format the date to the required format
+        val sdf = SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault())
+        val date = sdf.format(datetime)
+        Log.e("Formatted Date : ", date)
+
+        // Insert the date into the database as a string instead of trying to convert it to an integer
+        lifecycleScope.launch {
+            // Store the date as a string in the HistoryEntity
+            historyDao.insert(HistoryEntity(date = date))
+
+
+            Log.e("Date:", "Added to database successfully")
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null // Prevent memory leaks by clearing the binding reference
     }
 }

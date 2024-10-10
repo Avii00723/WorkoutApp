@@ -13,6 +13,7 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import aw.project.a7minuteworkout.FinishActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import aw.project.a7minuteworkout.databinding.ActivityExerciseBinding
 import aw.project.a7minuteworkout.databinding.DialogCustomBackConfirmationBinding
@@ -60,6 +61,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         setupExerciseStatusRecycleView()
     }
     override fun onBackPressed(){
+        super.onBackPressed()
         customDialogForBackButton()
             this@ExerciseActivity
     }

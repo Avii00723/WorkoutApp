@@ -30,7 +30,6 @@
         android:background="@drawable/item_circular_color_accent_border"
         android:gravity="center">
 
-        <!--Here the ic_action_done image in added in the drawables folders.-->
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -49,7 +48,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You have cpmpleted the workout!"
+        android:text="You have completed the workout!"
         android:textColor="#212121"
         android:textSize="18sp" />
 

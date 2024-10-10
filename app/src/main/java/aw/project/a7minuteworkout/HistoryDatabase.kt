@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 
 @Database(entities = [HistoryEntity::class], version = 1)
 abstract class HistoryDatabase:RoomDatabase() {
-    abstract fun historyDao():HistoyDao
+    abstract fun historyDao():HistoryDao
 
     companion object{
         @Volatile
